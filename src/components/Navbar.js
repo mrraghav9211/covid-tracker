@@ -37,26 +37,36 @@ useEffect(() => {
   countryData();
   fetchData();
 }, [])
+var cases=[];
+    var date=[];
   const fetchData = async () => {
+    
+
     let res = await axios.get(
       `https://api.covid19api.com/country/${value}?from=${from}&to=${to}`
     );
+
     setUser(res.data);
-    console.log(res.data[69].Active)
+    for(const dataObj of res.data){
+    cases.push(parseInt(dataObj.Active));
+    date.push(parseInt(dataObj.Date))
+    }
     let len = res.data.length - 1;
     setCovid(res.data[len]);
     
 
   };
+  console.log(cases,date);
 
-
+ 
 
   const [userData, setUserData] = useState({
-    labels: user.map((data) => data.Active),
+    labels: cases,
     datasets: [
       {
+       
         label: "Users Gained",
-        data: [user.map((data) => data.Date)],
+        data: date,
         backgroundColor: [
           "rgba(75,192,192,1)",
           "#ecf0f1",
